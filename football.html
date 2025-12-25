@@ -1,0 +1,202 @@
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CR Ball Football Club</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+header {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+nav {
+    background: #c40000;
+    padding: 10px;
+    text-align: center;
+}
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+section {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+}
+h2 {
+    text-align: center;
+    color: #c40000;
+}
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+table {
+    width: 100%;
+    background: white;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+th {
+    background: #c40000;
+    color: white;
+}
+button {
+    padding: 8px 15px;
+    background: #c40000;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background: #900000;
+}
+footer {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>CR BALL FOOTBALL CLUB</h1>
+    <p>Passion • Discipline • Victory</p>
+</header>
+
+<nav>
+    <a href="#about">About</a>
+    <a href="#team">Team</a>
+    <a href="#matches">Matches</a>
+    <a href="#news">News</a>
+</nav>
+
+<section id="about">
+    <h2>About CR Ball</h2>
+    <p style="text-align:center;">
+        CR Ball Football Club is dedicated to developing talent, teamwork,
+        and competitive football excellence.
+    </p>
+</section>
+
+<section id="team">
+    <h2>Team Departments</h2>
+    <div class="cards">
+        <div class="card">Goalkeepers</div>
+        <div class="card">Defenders</div>
+        <div class="card">Midfielders</div>
+        <div class="card">Forwards</div>
+    </div>
+</section>
+
+<section id="matches">
+    <h2>Upcoming Matches</h2>
+
+    <div style="text-align:center; margin-bottom:15px;">
+        <button onclick="filterMatches('all')">All</button>
+        <button onclick="filterMatches('Home')">Home</button>
+        <button onclick="filterMatches('Away')">Away</button>
+    </div>
+
+    <table id="matchTable">
+        <tr>
+            <th>Date</th>
+            <th>Opponent</th>
+            <th>Venue</th>
+        </tr>
+        <tr data-venue="Home">
+            <td>15 Aug 2025</td>
+            <td>United FC</td>
+            <td>Home</td>
+        </tr>
+        <tr data-venue="Away">
+            <td>22 Aug 2025</td>
+            <td>City Stars</td>
+            <td>Away</td>
+        </tr>
+        <tr data-venue="Home">
+            <td>30 Aug 2025</td>
+            <td>Rangers</td>
+            <td>Home</td>
+        </tr>
+    </table>
+</section>
+
+<section id="news">
+    <h2>Latest News</h2>
+    <div id="newsContainer" class="cards"></div>
+</section>
+
+<footer>
+    <p>© <span id="year"></span> CR Ball Football Club</p>
+</footer>
+
+<script>
+// Footer year
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Match filter
+function filterMatches(type) {
+    const rows = document.querySelectorAll("#matchTable tr[data-venue]");
+    rows.forEach(row => {
+        row.style.display =
+            type === "all" || row.dataset.venue === type ? "" : "none";
+    });
+}
+
+// News data
+const news = [
+    { title: "Season Kickoff", text: "CR Ball starts the season with confidence." },
+    { title: "Academy Trials", text: "Youth academy trials now open." },
+    { title: "New Coach", text: "CR Ball appoints a new head coach." }
+];
+
+// Load news
+const container = document.getElementById("newsContainer");
+news.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `<h3>${item.title}</h3><p>${item.text}</p>`;
+    container.appendChild(div);
+});
+</script>
+
+</body>
+</html>
+"""
+
+if __name__ == "__main__":
+    app.run(debug=True)
